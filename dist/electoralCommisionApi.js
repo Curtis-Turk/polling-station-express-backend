@@ -1,6 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ElectoralCommisionApi = void 0;
+// import fetch from "node-fetch";
+const axios_1 = __importDefault(require("axios"));
 class ElectoralCommisionApi {
     apiKey;
     constructor(apiKey) {
@@ -9,8 +14,11 @@ class ElectoralCommisionApi {
     /* fetches polling station information from the Electoral Commision Api
     EC endpoint information and response examples: https://api.electoralcommission.org.uk/docs/ */
     async verifyPostcode(postcode) {
-        const response = await fetch(`https://api.electoralcommission.org.uk/api/v1/postcode/${postcode}?token=${this.apiKey}`);
-        const result = await response.json();
+        const response = (await axios_1.default.get(
+        // `https://api.electoralcommission.org.uk/api/v1/postcode/${postcode}?token=${this.apiKey}`
+        `https://api.electoralcommission.org.uk/api/v1/postcode/TN39PS?token=${this.apiKey}`));
+        const result = response.data;
+        // const result = (await response) as any;
         if (result.dates.length)
             return {
                 pollingStationFound: true,
