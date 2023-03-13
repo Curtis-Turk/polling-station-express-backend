@@ -15,6 +15,9 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post("/postcode", (req: Request, res: Response) => {
+  console.log(req);
+  if (req.headers.origin !== process.env.FRONT_END_DOMAIN) res.sendStatus(400);
+
   const result: any = {
     pollingStationFound: true,
     pollingStations: [
@@ -30,6 +33,7 @@ app.post("/postcode", (req: Request, res: Response) => {
       },
     ],
   };
+
   return res.json(result);
 });
 
