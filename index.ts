@@ -7,16 +7,17 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
 
-app.use(cors);
+app.use(cors({ credentials: true, origin: true }));
+app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("hello world");
 });
 
 app.post("/submit", (req: Request, res: Response) => {
-  // res.send("hello world");
+  return res.send("hello world");
   // res.status(whatever).json(json goes here)
-  return res.sendStatus(204);
+  // return res.sendStatus(204);
 });
 
 app.listen(port, () => {

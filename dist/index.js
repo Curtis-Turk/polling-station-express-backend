@@ -9,14 +9,15 @@ const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
-app.use(cors_1.default);
+app.use((0, cors_1.default)({ credentials: true, origin: true }));
+app.use(express_1.default.json());
 app.get("/", (req, res) => {
     res.send("hello world");
 });
 app.post("/submit", (req, res) => {
-    // res.send("hello world");
+    return res.send("hello world");
     // res.status(whatever).json(json goes here)
-    return res.sendStatus(204);
+    // return res.sendStatus(204);
 });
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
