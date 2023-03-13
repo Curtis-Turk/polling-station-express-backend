@@ -14,10 +14,27 @@ app.use(express_1.default.json());
 app.get("/", (req, res) => {
     res.send("hello world");
 });
+app.post("/postcode", (req, res) => {
+    const result = {
+        pollingStationFound: true,
+        pollingStations: [
+            {
+                address: "123 Privet Drive, London",
+                postcode: "W12 LKW",
+                slug: "12345",
+            },
+            {
+                address: "124 dawn road, London",
+                postcode: "W13 LLW",
+                slug: "67890",
+            },
+        ],
+    };
+    return res.json(result);
+});
 app.post("/submit", (req, res) => {
-    return res.send("hello world");
-    // res.status(whatever).json(json goes here)
-    // return res.sendStatus(204);
+    console.log(req.body);
+    return res.sendStatus(204);
 });
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
