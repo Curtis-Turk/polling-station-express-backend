@@ -18,25 +18,10 @@ exports.app.get("/", (req, res) => {
     res.send("hello world");
 });
 exports.app.post("/postcode", async (req, res) => {
-    // if (req.headers.origin !== process.env.FRONT_END_DOMAIN) res.sendStatus(400);
-    console.log("hello");
-    console.log(req.body);
-    // const result: any = {
-    //   pollingStationFound: true,
-    //   pollingStations: [
-    //     {
-    //       address: "123 Privet Drive, London",
-    //       postcode: "W12 LKW",
-    //       slug: "12345",
-    //     },
-    //     {
-    //       address: "124 dawn road, London",
-    //       postcode: "W13 LLW",
-    //       slug: "67890",
-    //     },
-    //   ],
-    // };
-    const pollingStationResponse = await electoralCommission.verifyPostcode(req.body);
+    if (req.headers.origin !== process.env.FRONT_END_DOMAIN) {
+        return res.sendStatus(400);
+    }
+    const pollingStationResponse = await electoralCommission.verifyPostcode(req.body.postcode);
     return res.json(pollingStationResponse);
 });
 exports.app.post("/submit", (req, res) => {

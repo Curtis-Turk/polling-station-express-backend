@@ -13,9 +13,7 @@ class ElectoralCommisionApi {
     /* fetches polling station information from the Electoral Commision Api
     EC endpoint information and response examples: https://api.electoralcommission.org.uk/docs/ */
     async verifyPostcode(postcode) {
-        const response = (await axios_1.default.get(
-        // `https://api.electoralcommission.org.uk/api/v1/postcode/${postcode}?token=${this.apiKey}`
-        `https://api.electoralcommission.org.uk/api/v1/postcode/TN39PS?token=${this.apiKey}`));
+        const response = (await axios_1.default.get(`https://api.electoralcommission.org.uk/api/v1/postcode/${postcode}?token=${this.apiKey}`));
         const result = response.data;
         // const result = (await response) as any;
         if (result.dates.length)
