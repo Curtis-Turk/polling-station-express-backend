@@ -6,8 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
-// import fetch from "node-fetch";
-const electoralCommisionApi_1 = require("./electoralCommisionApi");
+const electoralCommisionApi_1 = require("./api/electoralCommisionApi");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
@@ -20,6 +19,7 @@ app.get("/", (req, res) => {
 app.post("/postcode", async (req, res) => {
     if (req.headers.origin !== process.env.FRONT_END_DOMAIN)
         res.sendStatus(400);
+    console.log(req.body);
     // const result: any = {
     //   pollingStationFound: true,
     //   pollingStations: [

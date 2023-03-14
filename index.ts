@@ -1,8 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-// import fetch from "node-fetch";
-import { ElectoralCommisionApi } from "./electoralCommisionApi";
+import { ElectoralCommisionApi } from "./api/electoralCommisionApi";
 
 dotenv.config();
 
@@ -22,6 +21,9 @@ app.get("/", (req: Request, res: Response) => {
 
 app.post("/postcode", async (req: Request, res: Response) => {
   if (req.headers.origin !== process.env.FRONT_END_DOMAIN) res.sendStatus(400);
+
+  console.log(req.body);
+
   // const result: any = {
   //   pollingStationFound: true,
   //   pollingStations: [
