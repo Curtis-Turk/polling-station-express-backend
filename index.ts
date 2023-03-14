@@ -50,6 +50,6 @@ app.post("/submit", (req: Request, res: Response) => {
   return res.sendStatus(204);
 });
 
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+// });

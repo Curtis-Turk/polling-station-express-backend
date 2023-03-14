@@ -43,6 +43,6 @@ exports.app.post("/submit", (req, res) => {
     console.log(req.body);
     return res.sendStatus(204);
 });
-exports.app.listen(port, () => {
-    console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+// });
