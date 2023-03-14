@@ -7,7 +7,6 @@ const index_1 = require("../index");
 const supertest = require("supertest-session");
 // import mockAxios from "jest-mock-axios";
 const pollingDataExists_1 = require("./mockApiResponses/pollingDataExists");
-const addressPickerResponse_1 = require("./mockApiResponses/addressPickerResponse");
 const axios_1 = __importDefault(require("axios"));
 // Mock jest and set the type
 jest.mock("axios");
@@ -38,7 +37,7 @@ describe("app", () => {
     });
     it("returns several addresses", async () => {
         const postcodeRequest = { postcode: "TN4TWH" };
-        mockedAxiosGet.mockResolvedValueOnce({ data: addressPickerResponse_1.addressPickerResponse });
+        mockedAxiosGet.mockResolvedValueOnce({ data: addressPickerResponse });
         const result = await supertest(index_1.app)
             .post("/postcode")
             .set("origin", process.env.FRONT_END_DOMAIN)

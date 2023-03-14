@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addressPickerResponse = void 0;
-exports.addressPickerResponse = {
+exports.adressPickerResponse = void 0;
+exports.adressPickerResponse = {
     address_picker: true,
     addresses: [
         {

@@ -1,9 +1,13 @@
 import axios from "axios";
 
 interface addressObject {
-  address?: string;
-  postcode?: string;
-  slug?: string;
+  address: string;
+  postcode: string;
+  slug: string;
+}
+
+interface responseAddressObject extends addressObject {
+  url: string;
 }
 
 interface pollingStationsObject {
@@ -24,7 +28,6 @@ export class ElectoralCommisionApi {
       `https://api.electoralcommission.org.uk/api/v1/postcode/${postcode}?token=${this.apiKey}`
     )) as any;
     const result = response.data;
-    // const result = (await response) as any;
     if (result.dates.length)
       return {
         pollingStationFound: true,
@@ -32,11 +35,12 @@ export class ElectoralCommisionApi {
       };
 
     if (result.address_picker) {
-      const pollingStations = result.addresses.map((address: addressObject) => {
-        {
-          address.address, address.postcode, address.slug;
+      const pollingStations = result.addresses.map(
+        (addressObject: responseAddressObject) => {
+          const { address, postcode, slug } = addressObject;
+          return { address, postcode, slug };
         }
-      });
+      );
       return {
         pollingStationFound: false,
         pollingStations,

@@ -3,6 +3,7 @@ const supertest = require("supertest-session");
 // import mockAxios from "jest-mock-axios";
 import { pollingDataExistsResponse } from "./mockApiResponses/pollingDataExists";
 import { addressPickerResponse } from "./mockApiResponses/addressPickerResponse";
+
 import axios from "axios";
 
 // Mock jest and set the type
@@ -56,13 +57,11 @@ describe("app", () => {
           address: "16 DUNCAN CLOSE, ST. MELLONS, CARDIFF",
           postcode: "CF3 1NP",
           slug: "100100106448",
-          url: "http://developers.democracyclub.org.uk/api/v1address/100100106448",
         },
         {
           address: "26 DUNCAN CLOSE, ST. MELLONS, CARDIFF",
           postcode: "CF3 1NP",
           slug: "100100106458",
-          url: "http://developers.democracyclub.org.uk/api/v1address/100100106458",
         },
       ],
     });
