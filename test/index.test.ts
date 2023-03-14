@@ -1,19 +1,11 @@
 import { app } from "../index";
 const supertest = require("supertest-session");
-// import mockAxios from "jest-mock-axios";
 import { pollingDataExistsResponse } from "./mockApiResponses/pollingDataExists";
 import { addressPickerResponse } from "./mockApiResponses/addressPickerResponse";
-
+import { noUpcomingBallotsResponse } from "./mockApiResponses/noUpcomingBallotsResponse";
 import axios from "axios";
-
-// Mock jest and set the type
 jest.mock("axios");
 const mockedAxiosGet = axios.get as jest.MockedFunction<typeof axios>;
-
-// afterEach(() => {
-//   // cleaning up the mess left behind the previous test
-//   mockAxios.reset();
-// });
 
 describe("app", () => {
   it("says hello", async () => {
@@ -64,6 +56,23 @@ describe("app", () => {
           slug: "100100106458",
         },
       ],
+    });
+  });
+
+  it("returns no polling station or addresses if no upcoming ballots in area", async () => {
+    const postcodeRequest = { postcode: "TN4TWH" };
+    mockedAxiosGet.mockResolvedValueOnce({ data: noUpcomingBallotsResponse });
+    const result = await supertest(app)
+      .post("/postcode")
+      .set("origin", process.env.FRONT_END_DOMAIN)
+      .send(postcodeRequest);
+    expect(mockedAxiosGet).toHaveBeenCalledWith(
+      `https://api.electoralcommission.org.uk/api/v1/postcode/TN4TWH?token=${process.env.EC_API_KEY}`
+    );
+    expect(result.status).toBe(200);
+    expect(result.body).toEqual({
+      pollingStationFound: false,
+      pollingStations: [],
     });
   });
 
