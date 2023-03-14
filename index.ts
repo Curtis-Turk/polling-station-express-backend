@@ -5,7 +5,7 @@ import { ElectoralCommisionApi } from "./api/electoralCommisionApi";
 
 dotenv.config();
 
-const app: Express = express();
+export const app: Express = express();
 const port = process.env.PORT;
 
 app.use(cors({ credentials: true, origin: true }));
