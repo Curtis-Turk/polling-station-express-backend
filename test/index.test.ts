@@ -3,6 +3,7 @@ const supertest = require("supertest-session");
 import { pollingDataExistsResponse } from "./mockApiResponses/pollingDataExists";
 import { addressPickerResponse } from "./mockApiResponses/addressPickerResponse";
 import { noUpcomingBallotsResponse } from "./mockApiResponses/noUpcomingBallotsResponse";
+import { postcodeNotFound } from "./mockApiResponses/postcodeNotFound";
 import axios from "axios";
 jest.mock("axios");
 const mockedAxiosGet = axios.get as jest.MockedFunction<typeof axios>;
@@ -74,6 +75,22 @@ describe("app", () => {
       pollingStationFound: false,
       pollingStations: [],
     });
+  });
+
+  it.only("returns an error message if postcode not found", async () => {
+    const postcodeRequest = { postcode: "aaaaaa" };
+    mockedAxiosGet.mockRejectedValue({
+      data: postcodeNotFound,
+      status: 400,
+    });
+    const result = await supertest(app)
+      .post("/postcode")
+      .set("origin", process.env.FRONT_END_DOMAIN)
+      .send(postcodeRequest);
+    expect(mockedAxiosGet).toHaveBeenCalledWith(
+      `https://api.electoralcommission.org.uk/api/v1/postcode/aaaaaa?token=${process.env.EC_API_KEY}`
+    );
+    expect(result.status).toBe(400);
   });
 
   it("returns a 400 status with incorrect origin", async () => {

@@ -24,32 +24,41 @@ export class ElectoralCommisionApi {
   /* fetches polling station information from the Electoral Commision Api
   EC endpoint information and response examples: https://api.electoralcommission.org.uk/docs/ */
   async verifyPostcode(postcode: string): Promise<pollingStationsObject> {
-    const response = (await axios.get(
-      `https://api.electoralcommission.org.uk/api/v1/postcode/${postcode}?token=${this.apiKey}`
-    )) as any;
-    const result = response.data;
-    if (result.dates.length)
-      return {
-        pollingStationFound: true,
-        pollingStations: [],
-      };
+    try {
+      const response = (await axios.get(
+        `https://api.electoralcommission.org.uk/api/v1/postcode/${postcode}?token=${this.apiKey}`
+      )) as any;
 
-    if (result.address_picker) {
-      const pollingStations = result.addresses.map(
-        (addressObject: responseAddressObject) => {
-          const { address, postcode, slug } = addressObject;
-          return { address, postcode, slug };
-        }
-      );
+      const result = response.data;
+      if (result.dates.length)
+        return {
+          pollingStationFound: true,
+          pollingStations: [],
+        };
+
+      if (result.address_picker) {
+        const pollingStations = result.addresses.map(
+          (addressObject: responseAddressObject) => {
+            const { address, postcode, slug } = addressObject;
+            return { address, postcode, slug };
+          }
+        );
+        return {
+          pollingStationFound: false,
+          pollingStations,
+        };
+      }
+
       return {
         pollingStationFound: false,
-        pollingStations,
+        pollingStations: [],
+      };
+    } catch (e) {
+      console.log(e);
+      return {
+        pollingStationFound: false,
+        pollingStations: [],
       };
     }
-
-    return {
-      pollingStationFound: false,
-      pollingStations: [],
-    };
   }
 }
