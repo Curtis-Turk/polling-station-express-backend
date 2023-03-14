@@ -36,4 +36,9 @@ describe("app", () => {
       pollingStations: [],
     });
   });
+
+  it("returns a 400 status with incorrect origin", async () => {
+    const postcodeRequest = { postcode: "TN4TWH" };
+    await supertest(app).post("/postcode").send(postcodeRequest).expect(400);
+  });
 });

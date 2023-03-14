@@ -20,9 +20,10 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post("/postcode", async (req: Request, res: Response) => {
-  if (req.headers.origin !== process.env.FRONT_END_DOMAIN) res.sendStatus(400);
-  console.log("hello");
-  console.log(req.body);
+  if (req.headers.origin !== process.env.FRONT_END_DOMAIN) {
+    return res.sendStatus(400);
+  }
+
   const pollingStationResponse = await electoralCommission.verifyPostcode(
     req.body.postcode
   );
