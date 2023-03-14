@@ -18,8 +18,8 @@ exports.app.get("/", (req, res) => {
     res.send("hello world");
 });
 exports.app.post("/postcode", async (req, res) => {
-    if (req.headers.origin !== process.env.FRONT_END_DOMAIN)
-        res.sendStatus(400);
+    // if (req.headers.origin !== process.env.FRONT_END_DOMAIN) res.sendStatus(400);
+    console.log("hello");
     console.log(req.body);
     // const result: any = {
     //   pollingStationFound: true,

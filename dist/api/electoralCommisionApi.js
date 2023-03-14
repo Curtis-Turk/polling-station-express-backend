@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ElectoralCommisionApi = void 0;
-// import fetch from "node-fetch";
 const axios_1 = __importDefault(require("axios"));
 class ElectoralCommisionApi {
     apiKey;
