@@ -22,7 +22,8 @@ exports.app.post("/postcode", async (req, res) => {
         return res.sendStatus(400);
     }
     const pollingStationResponse = await electoralCommission.verifyPostcode(req.body.postcode);
-    return res.json(pollingStationResponse);
+    const statusCode = pollingStationResponse.errorMessage ? 400 : 200;
+    return res.status(statusCode).json(pollingStationResponse);
 });
 exports.app.post("/submit", (req, res) => {
     console.log(req.body);
