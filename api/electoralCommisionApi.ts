@@ -28,9 +28,9 @@ export class ElectoralCommisionApi {
   async verifyPostcode(postcode: string): Promise<pollingStationsObject> {
     try {
       const response = (await axios.get(
-        `https://api.electoralcommission.org.uk/api/v1/postcode/${postcode}?token=${this.apiKey}`,
+        `https://api.electoralcommission.org.uk/api/v1/postcode/${postcode}?token=${this.apiKey}`
         // axios will timeout after 5 seconds
-        { timeout: 5 }
+        // { timeout: 5 }
       )) as AxiosResponse;
 
       const result = response.data;

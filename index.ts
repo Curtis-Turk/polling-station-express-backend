@@ -28,6 +28,11 @@ app.post("/postcode", async (req: Request, res: Response) => {
     req.body.postcode
   );
   const statusCode = pollingStationResponse.errorMessage ? 400 : 200;
+  // return res.status(statusCode).json({
+  //   errorMessage: "Connection issue whilst verifying postcode",
+  //   pollingStationFound: false,
+  //   pollingStations: [],
+  // });
   return res.status(statusCode).json(pollingStationResponse);
 });
 
@@ -36,6 +41,8 @@ app.post("/submit", (req: Request, res: Response) => {
   return res.sendStatus(204);
 });
 
-// app.listen(port, () => {
-//   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-// });
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => {
+    console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+  });
+}

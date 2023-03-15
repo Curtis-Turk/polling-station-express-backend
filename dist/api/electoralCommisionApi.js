@@ -14,9 +14,10 @@ class ElectoralCommisionApi {
     EC endpoint information and response examples: https://api.electoralcommission.org.uk/docs/ */
     async verifyPostcode(postcode) {
         try {
-            const response = (await axios_1.default.get(`https://api.electoralcommission.org.uk/api/v1/postcode/${postcode}?token=${this.apiKey}`, 
+            const response = (await axios_1.default.get(`https://api.electoralcommission.org.uk/api/v1/postcode/${postcode}?token=${this.apiKey}`
             // axios will timeout after 5 seconds
-            { timeout: 5 }));
+            // { timeout: 5 }
+            ));
             const result = response.data;
             if (result.dates.length)
                 return {
