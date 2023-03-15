@@ -4,7 +4,7 @@ import { pollingDataExistsResponse } from "./mockApiResponses/pollingDataExists"
 import { addressPickerResponse } from "./mockApiResponses/addressPickerResponse";
 import { noUpcomingBallotsResponse } from "./mockApiResponses/noUpcomingBallotsResponse";
 import { postcodeNotFound } from "./mockApiResponses/postcodeNotFound";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 jest.mock("axios");
 const mockedAxiosGet = axios.get as jest.MockedFunction<typeof axios>;
 
@@ -81,8 +81,10 @@ describe("app", () => {
     const postcodeRequest = { postcode: "aaaaaa" };
     // axios will throw an error with status 400
     mockedAxiosGet.mockRejectedValue({
-      data: postcodeNotFound,
-      status: 400,
+      response: {
+        data: postcodeNotFound,
+        status: 400,
+      },
     });
     const result = await supertest(app)
       .post("/postcode")
@@ -94,6 +96,24 @@ describe("app", () => {
     expect(result.status).toBe(400);
     expect(result.body).toEqual({
       errorMessage: "Could not geocode from any source",
+      pollingStationFound: false,
+      pollingStations: [],
+    });
+  });
+
+  it("returns an error message if axios couldn't connect", async () => {
+    const postcodeRequest = { postcode: "TN4TWH" };
+    mockedAxiosGet.mockRejectedValue(new AxiosError());
+    const result = await supertest(app)
+      .post("/postcode")
+      .set("origin", process.env.FRONT_END_DOMAIN)
+      .send(postcodeRequest);
+    expect(mockedAxiosGet).toHaveBeenCalledWith(
+      `https://api.electoralcommission.org.uk/api/v1/postcode/TN4TWH?token=${process.env.EC_API_KEY}`
+    );
+    expect(result.status).toBe(400);
+    expect(result.body).toEqual({
+      errorMessage: "Connection issue whilst verifying postcode",
       pollingStationFound: false,
       pollingStations: [],
     });

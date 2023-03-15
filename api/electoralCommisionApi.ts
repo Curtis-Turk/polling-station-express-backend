@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 interface addressObject {
   address: string;
@@ -29,7 +29,7 @@ export class ElectoralCommisionApi {
     try {
       const response = (await axios.get(
         `https://api.electoralcommission.org.uk/api/v1/postcode/${postcode}?token=${this.apiKey}`
-      )) as any;
+      )) as AxiosResponse;
 
       const result = response.data;
 
@@ -56,12 +56,13 @@ export class ElectoralCommisionApi {
         pollingStationFound: false,
         pollingStations: [],
       };
-    } catch {
-      return {
-        errorMessage: "Could not geocode from any source",
-        pollingStationFound: false,
-        pollingStations: [],
-      };
+    } catch (e: any) {
+      const errorMessage =
+        e.response &&
+        e.response.data.message === "Could not geocode from any source"
+          ? e.response?.data.message
+          : "Connection issue whilst verifying postcode";
+      return { errorMessage, pollingStationFound: false, pollingStations: [] };
     }
   }
 }
