@@ -77,8 +77,9 @@ describe("app", () => {
     });
   });
 
-  it.only("returns an error message if postcode not found", async () => {
+  it("returns an error message if postcode not found", async () => {
     const postcodeRequest = { postcode: "aaaaaa" };
+    // axios will throw an error with status 400
     mockedAxiosGet.mockRejectedValue({
       data: postcodeNotFound,
       status: 400,
@@ -91,6 +92,11 @@ describe("app", () => {
       `https://api.electoralcommission.org.uk/api/v1/postcode/aaaaaa?token=${process.env.EC_API_KEY}`
     );
     expect(result.status).toBe(400);
+    expect(result.body).toEqual({
+      errorMessage: "Could not geocode from any source",
+      pollingStationFound: false,
+      pollingStations: [],
+    });
   });
 
   it("returns a 400 status with incorrect origin", async () => {

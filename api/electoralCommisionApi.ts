@@ -13,7 +13,9 @@ interface responseAddressObject extends addressObject {
 interface pollingStationsObject {
   pollingStationFound: boolean;
   pollingStations: addressObject[];
+  errorMessage?: string;
 }
+
 export class ElectoralCommisionApi {
   private apiKey: string;
 
@@ -30,6 +32,7 @@ export class ElectoralCommisionApi {
       )) as any;
 
       const result = response.data;
+
       if (result.dates.length)
         return {
           pollingStationFound: true,
@@ -53,9 +56,9 @@ export class ElectoralCommisionApi {
         pollingStationFound: false,
         pollingStations: [],
       };
-    } catch (e) {
-      console.log(e);
+    } catch {
       return {
+        errorMessage: "Could not geocode from any source",
         pollingStationFound: false,
         pollingStations: [],
       };

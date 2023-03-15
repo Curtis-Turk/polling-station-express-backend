@@ -21,3 +21,5 @@ const axiosTest = async () => {
 };
 
 axiosTest();
+
+// https://stackoverflow.com/questions/39153080/how-can-i-get-the-status-code-from-an-http-error-in-axios
