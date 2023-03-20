@@ -11,7 +11,7 @@ class ElectoralCommisionApi {
         this.apiKey = apiKey;
     }
     /* fetches polling station information from the Electoral Commision Api
-    EC endpoint information and response examples: https://api.electoralcommission.org.uk/docs/ */
+  EC endpoint information and response examples: https://api.electoralcommission.org.uk/docs/ */
     async verifyPostcode(postcode) {
         try {
             const response = (await axios_1.default.get(`https://api.electoralcommission.org.uk/api/v1/postcode/${postcode}?token=${this.apiKey}`
@@ -41,9 +41,35 @@ class ElectoralCommisionApi {
         }
         catch (e) {
             const errorMessage = e.response &&
-                e.response.data.message === "Could not geocode from any source"
+                e.response.data.message === 'Could not geocode from any source'
                 ? e.response?.data.message
-                : "Connection issue whilst verifying postcode";
+                : 'Connection issue whilst verifying postcode';
+            return { errorMessage, pollingStationFound: false, pollingStations: [] };
+        }
+    }
+    /* getting a polling station once addressPicker step has been completed */
+    async verifyAddress(addressSlug) {
+        try {
+            const response = (await axios_1.default.get(`https://api.electoralcommission.org.uk/api/v1/address/${addressSlug}?token=${this.apiKey}`
+            // axios will timeout after 5 seconds
+            // { timeout: 5 }
+            ));
+            const result = response.data;
+            if (result.dates.length)
+                return {
+                    pollingStationFound: true,
+                    pollingStations: [],
+                };
+            return {
+                pollingStationFound: false,
+                pollingStations: [],
+            };
+        }
+        catch (e) {
+            const errorMessage = e.response &&
+                e.response.data.message === 'Could not geocode from any source'
+                ? e.response?.data.message
+                : 'Connection issue whilst verifying postcode';
             return { errorMessage, pollingStationFound: false, pollingStations: [] };
         }
     }
